@@ -75,10 +75,13 @@ userListRef.on('child_changed', function(snapshot){
 $(function(){
 
 	$('button').on('click', function(){
-		var username = $('input').val();
-		var push = userListRef.push({name: username, boxcolor: randomColorGen()});
-		currentUserID = push.key()
-
+		if(currentUserID){
+			alert("You have already registered!");
+		} else {
+				var username = $('input').val();
+				var push = userListRef.push({name: username, boxcolor: randomColorGen()});
+				currentUserID = push.key();
+		}
 	});
 
 	$('body').keydown(function(e){
