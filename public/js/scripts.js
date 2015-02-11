@@ -19,9 +19,6 @@ function randomColorGen(){
 };
 
 function boxMover(userID, direction){
-	console.log(userID)
-	console.log(direction)
-	// console.log("move started")
 	var $box = $('#' + userID);
 	$box.animate(direction, 10, function(){
 		console.log("move done")
