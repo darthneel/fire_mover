@@ -4,16 +4,21 @@ var myDataRef = new Firebase('https://glowing-fire-7498.firebaseio.com/');
 
 var userListRef = myDataRef.child("users");
 
-// myDataRef.on('child_added', function(snapshot) {
-// 	console.log(snapshot.val());
-// 	var box = $('#box');
-// 	// box.fadeOut("fast");
-	// box.animate({
-	// 	left: "+=5px"
-	// }, 1000, function(){
-	// 	console.log("done")
-	// });
-// });
+function randomInt() {
+  return Math.floor(Math.random() * (255 + 1));
+}
+
+
+function randomColorGen(){
+	var r = randomInt();
+  var g = randomInt();
+  var b = randomInt();
+
+  var rgbString = "rgb(" + r + "," + g + "," + b + ")";
+
+  return rgbString;
+};
+
 function boxMover(userID, direction){
 	console.log(userID)
 	console.log(direction)
@@ -25,14 +30,15 @@ function boxMover(userID, direction){
 };
 
 
-
 userListRef.on('child_added', function(snapshot){
 	var $li = $('<li>' + snapshot.val().name + '</li>');
 	$li.data('userID', snapshot.key());
 	$('#users').append($li);
 
 	if(snapshot.key() != currentUserID){
-		$('body').append('<div class="box" id=' + snapshot.key() + '></div>')
+		var $div = $('<div class="box" id=' + snapshot.key() + '></div>');
+		$div.css("background-color", snapshot.val().boxcolor )
+		$('body').append($div);
 	};
 });
 
@@ -70,7 +76,7 @@ $(function(){
 
 	$('button').on('click', function(){
 		var username = $('input').val();
-		var push = userListRef.push({name: username});
+		var push = userListRef.push({name: username, boxcolor: randomColorGen()});
 		currentUserID = push.key()
 
 	});
