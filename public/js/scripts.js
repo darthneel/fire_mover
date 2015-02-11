@@ -1,13 +1,12 @@
 var currentUserID;
 
-var myDataRef = new Firebase('https://glowing-fire-7498.firebaseio.com/');
+var baseRef = new Firebase('https://glowing-fire-7498.firebaseio.com/');
 
-var userListRef = myDataRef.child("users");
+var userListRef = baseRef.child("users");
 
 function randomInt() {
   return Math.floor(Math.random() * (255 + 1));
 }
-
 
 function randomColorGen(){
 	var r = randomInt();
@@ -54,13 +53,9 @@ userListRef.on('child_removed', function(snapshot){
 });
 
 userListRef.on('child_changed', function(snapshot){
-	console.log("change");
 	var keysArr = Object.keys(snapshot.val().moves);
 	var keyChange = snapshot.val().moves[ keysArr[keysArr.length - 1] ];
-	console.log(keyChange);
-	console.log(typeof(keyChange));
 	if(keyChange == 37){
-		console.log("in 37 cond")
 		boxMover(snapshot.key(), {left: "-=5px"})
 	} else if(keyChange == 38) {
 			boxMover(snapshot.key(), {top: "-=5px"})
@@ -74,21 +69,22 @@ userListRef.on('child_changed', function(snapshot){
 
 $(function(){
 
-	$('button').on('click', function(){
+	$('button').on('click', function(e){
+		e.preventDefault();
 		if(currentUserID){
 			alert("You have already registered!");
 		} else {
-				var username = $('input').val();
-				var push = userListRef.push({name: username, boxcolor: randomColorGen()});
-				currentUserID = push.key();
+			var $input = $('input')
+			var username = $input.val();
+			var push = userListRef.push({name: username, boxcolor: randomColorGen()});
+			currentUserID = push.key();
+			input.val('');
 		}
 	});
 
 	$('body').keydown(function(e){
-		console.log(e.keyCode);
 		var keyArr = [37, 38, 39, 40]
 		if(keyArr.indexOf(e.keyCode) > -1){
-			console.log("in if for press")
 			userListRef.child(currentUserID).child("moves").push(e.keyCode);
 		}
 	});
