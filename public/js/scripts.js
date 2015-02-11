@@ -75,13 +75,13 @@ $(function(){
 			var username = $input.val();
 			var push = userListRef.push({name: username, boxcolor: randomColorGen()});
 			currentUserID = push.key();
-			input.val('');
+			$input.val('');
 		}
 	});
 
 	$('body').keydown(function(e){
 		var keyArr = [37, 38, 39, 40]
-		if(keyArr.indexOf(e.keyCode) > -1){
+		if(currentUserID && keyArr.indexOf(e.keyCode) > -1){
 			userListRef.child(currentUserID).child("moves").push(e.keyCode);
 		}
 	});
