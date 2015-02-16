@@ -4,4 +4,4 @@
 
 Utilizing Firebase as a backend to make DOM changes across multiple clients
 
-URL - darthneel.github.io/fire_mover
+Link to project - [Firemover](darthneel.github.io/fire_mover)
